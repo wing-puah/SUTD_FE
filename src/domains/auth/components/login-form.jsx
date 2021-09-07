@@ -1,32 +1,26 @@
-import { Button } from "components/button";
-import { TextField } from "components/text-field";
-import * as React from "react";
-import { useLogin } from "../auth.state";
+import { Button } from 'components/button';
+import { TextField } from 'components/text-field';
+import * as React from 'react';
+import { useLogin } from '../auth.state';
 
 export const LoginForm = () => {
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const [status, setStatus] = React.useState("idle");
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
+  const [status, setStatus] = React.useState('idle');
   const login = useLogin();
 
   return (
-    <div className="max-w-md mx-auto m-6 shadow">
+    <div className="max-w-md mx-auto px-4 sm:px-6 py-6 bg-white shadow">
       <form
         onSubmit={(ev) => {
           ev.preventDefault();
-          setStatus("loading");
-          login({ email, password }).catch(() => setStatus("error"));
+          setStatus('loading');
+          login({ email, password }).catch(() => setStatus('error'));
         }}
         className="p-6"
       >
-        {status === "error" && (
-          <div className="p-2 text-red-800 bg-red-200 rounded-sm">
-            Fail to login.
-          </div>
-        )}
-        <div className="text-3xl mt-4 mb-8 font-extrabold text-center">
-          Login
-        </div>
+        {status === 'error' && <div className="p-2 text-red-800 bg-red-200 rounded-sm">Fail to login.</div>}
+        <div className="text-3xl mt-4 mb-8 font-extrabold text-center">Login</div>
         <div className="space-y-6">
           <TextField
             label="Email"
@@ -36,7 +30,7 @@ export const LoginForm = () => {
             id="username"
             autoFocus
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
           />
           <TextField
             label="Password"
@@ -46,14 +40,9 @@ export const LoginForm = () => {
             id="password"
             type="password"
             required
-            disabled={status === "loading"}
+            disabled={status === 'loading'}
           />
-          <Button
-            type="submit"
-            variant="primary"
-            className="w-full"
-            disabled={status === "loading"}
-          >
+          <Button type="submit" variant="primary" className="w-full" disabled={status === 'loading'}>
             Login
           </Button>
         </div>
