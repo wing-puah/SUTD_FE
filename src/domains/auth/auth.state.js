@@ -91,9 +91,10 @@ export const useLogin = () => {
   }
 
   return function invokeLogin({ email, password }) {
-    return login(email, password).then((res) => {
+    return login(email, password).then(async (res) => {
       auth.login(res.access_token);
-      localStorage.setItem(ACCESS_TOKEN_STORAGE, res.access_token);
+      await localStorage.setItem(ACCESS_TOKEN_STORAGE, res.access_token);
+      return res;
     });
   };
 };

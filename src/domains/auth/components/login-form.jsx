@@ -1,3 +1,5 @@
+import { useHistory } from 'react-router-dom';
+
 import { Button } from 'components/button';
 import { TextField } from 'components/text-field';
 import * as React from 'react';
@@ -8,6 +10,7 @@ export const LoginForm = () => {
   const [password, setPassword] = React.useState('');
   const [status, setStatus] = React.useState('idle');
   const login = useLogin();
+  const history = useHistory();
 
   return (
     <div className="max-w-md mx-auto px-4 sm:px-6 py-6 bg-white shadow">
@@ -15,7 +18,16 @@ export const LoginForm = () => {
         onSubmit={(ev) => {
           ev.preventDefault();
           setStatus('loading');
-          login({ email, password }).catch(() => setStatus('error'));
+          login({ email, password })
+            .then(({ access_token }) => {
+              if (!access_token) {
+                setStatus('error');
+                return;
+              }
+
+              history.push('/marketplace');
+            })
+            .catch(() => setStatus('error'));
         }}
         className="p-6"
       >

@@ -7,6 +7,7 @@ import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { AuthProvider } from './domains/auth';
 import { LoginPage } from './pages/login';
+import { Marketplace } from './pages/marketplace';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -22,8 +23,11 @@ ReactDOM.render(
       <AuthProvider>
         <main className="bg-gray-50 p-6 sm:p-12 min-h-screen">
           <Switch>
-            <Route path="/">
+            <Route path="/" exact>
               <LoginPage />
+            </Route>
+            <Route path="/marketplace">
+              <Marketplace />
             </Route>
           </Switch>
         </main>
