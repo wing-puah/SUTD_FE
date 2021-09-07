@@ -1,11 +1,33 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { BrowserRouter, Route, Switch } from 'react-router-dom';
+
+import { AuthProvider } from './domains/auth';
+import { LoginPage } from './pages/login';
+
 import './index.css';
-import App from './App';
+
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 1000,
+    },
+  },
+});
 
 ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
+  <BrowserRouter>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Switch>
+          <Route path="/">
+            <LoginPage />
+          </Route>
+        </Switch>
+      </AuthProvider>
+    </QueryClientProvider>
+  </BrowserRouter>,
   document.getElementById('root')
 );
