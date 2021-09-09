@@ -1,13 +1,12 @@
-import { useAuth } from "domains/auth";
-import * as React from "react";
-import { deleteCartItem, getCartItems } from "../marketplace.service";
+import { useAuth } from 'domains/auth';
+import * as React from 'react';
+import { deleteCartItem, getCartItems, addToCart } from '../marketplace.service';
 
 export const useCartItems = () => {
   const [data, setData] = React.useState(undefined);
   const { accessToken } = useAuth();
 
-  const loadData = ({ token, signal }) =>
-    getCartItems({ signal, token }).then(setData);
+  const loadData = ({ token, signal }) => getCartItems({ signal, token }).then(setData);
 
   React.useEffect(() => {
     if (accessToken) {
@@ -23,6 +22,21 @@ export const useCartItems = () => {
   return {
     data,
     loadData: () => loadData({ token: accessToken }),
+  };
+};
+
+export const useAddCartItems = () => {
+  const { accessToken } = useAuth();
+
+  const addData = React.useCallback(
+    (listingId) => {
+      addToCart(listingId, accessToken);
+    },
+    [accessToken]
+  );
+
+  return {
+    addData,
   };
 };
 
