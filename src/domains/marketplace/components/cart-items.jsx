@@ -27,19 +27,53 @@ const EmptyCart = () => (
   </div>
 );
 
-const SingleItem = ({ item }) => (
-  <img
-    src={item.listing.imageUrl}
-    alt=""
-    className="w-24 h-24 rounded-md object-center object-cover sm:w-32 sm:h-32"
-  />
+const DeleteIcon = () => (
+  <svg
+    class="w-6 h-6"
+    fill="none"
+    stroke="currentColor"
+    viewBox="0 0 24 24"
+    xmlns="http://www.w3.org/2000/svg"
+  >
+    <path
+      stroke-linecap="round"
+      stroke-linejoin="round"
+      stroke-width="2"
+      d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"
+    ></path>
+  </svg>
+);
+
+const SingleItem = ({ item, onDelete }) => (
+  <li className="flex px-4 sm:px-6 py-4">
+    <img src={item.listing.imageUrl} alt="" className="h-10 w-10 rounded-full" />
+    <div className="flex-1 flex justify-between items-center ml-3">
+      <div>
+        <p className="text-sm font-medium text-gray-900">{item.listing.title}</p>
+        <p className="text-sm text-gray-500">
+          ${item.listing.price.toLocaleString()} x {item.quantity}
+        </p>
+      </div>
+    </div>
+
+    <div className="flex items-center gap-2">
+      <div>$ {(Number(item.listing.price) * Number(item.quantity)).toLocaleString()}</div>
+      <button
+        type="button"
+        onClick={() => onDelete(item.listing._id)}
+        className="text-red-400 p-1 rounded-full hover:bg-gray-50 focus:outline-none focus:bg-gray-50 focus:ring focus:ring-pink-500 focus:ring-opacity-30 transition duration-150 ease-in-out"
+      >
+        <DeleteIcon />
+      </button>
+    </div>
+  </li>
 );
 
 export const CartItems = () => {
-  const { data, loadData, ...rest } = useCartItems();
+  const { data, isLoading } = useCartItems();
   const deleteItemMutation = useDeleteCartItemsMutation();
 
-  console.log({ rest, data });
+  const deleteSingleItem = (id) => deleteItemMutation.mutate(id);
 
   const subtotal = data
     ? data.reduce((total, item) => total + item.listing.price * item.quantity, 0)
@@ -61,9 +95,24 @@ export const CartItems = () => {
       </div>
 
       {!data || (data && data.length === 0) ? (
-        <EmptyCart />
+        !isLoading ? (
+          <EmptyCart />
+        ) : (
+          'Loading ...'
+        )
       ) : (
-        data.map((item) => <SingleItem key={item._id} item={item} />)
+        <>
+          <ul className="divide-y divide-gray-200">
+            {data.map((item) => (
+              <SingleItem key={item._id} item={item} onDelete={deleteSingleItem} />
+            ))}
+          </ul>
+          <div className="flex-shrink-0 px-4 py-4 flex justify-end border-t border-gray-200">
+            <span>
+              Total <span className="text-3xl">${subtotal.toLocaleString()}</span>
+            </span>
+          </div>
+        </>
       )}
     </div>
   );

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { useQuery, useMutation, useQueryClient } from 'react-query';
 
 import { useAuth } from 'domains/auth';
@@ -8,6 +7,7 @@ export const useCartItems = () => {
   const { accessToken } = useAuth();
 
   const query = useQuery(['cartItems', accessToken], () => {
+    console.log({ accessToken });
     const abortController = new AbortController();
     const request = getCartItems({ token: accessToken, signal: abortController.signal });
     request.cancel = () => abortController.abort();
@@ -30,7 +30,7 @@ export const useDeleteCartItemsMutation = () => {
   const queryClient = useQueryClient();
   const { accessToken } = useAuth();
 
-  return useMutation((listingId) => deleteCartItem(listingId, accessToken), {
+  return useMutation((listingId) => deleteCartItem(listingId, { token: accessToken }), {
     onSuccess: () => queryClient.invalidateQueries('cartItems'),
   });
 };
