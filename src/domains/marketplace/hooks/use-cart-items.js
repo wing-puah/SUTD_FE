@@ -1,49 +1,36 @@
-import { useAuth } from 'domains/auth';
 import * as React from 'react';
+import { useQuery, useMutation, useQueryClient } from 'react-query';
+
+import { useAuth } from 'domains/auth';
 import { deleteCartItem, getCartItems, addToCart } from '../marketplace.service';
 
 export const useCartItems = () => {
-  const [data, setData] = React.useState(undefined);
   const { accessToken } = useAuth();
 
-  const loadData = ({ token, signal }) => getCartItems({ signal, token }).then(setData);
+  const query = useQuery(['cartItems', accessToken], () => {
+    const abortController = new AbortController();
+    const request = getCartItems({ token: accessToken, signal: abortController.signal });
+    request.cancel = () => abortController.abort();
+    return request;
+  });
 
-  React.useEffect(() => {
-    if (accessToken) {
-      const ab = new AbortController();
-      loadData({ signal: ab.signal, token: accessToken });
-
-      return () => {
-        ab.abort();
-      };
-    }
-  }, [accessToken]);
-
-  return {
-    data,
-    loadData: () => loadData({ token: accessToken }),
-  };
+  return { ...query };
 };
 
-export const useAddCartItems = () => {
+export const useAddCartItemsMutation = () => {
+  const queryClient = useQueryClient();
   const { accessToken } = useAuth();
 
-  const addData = React.useCallback(
-    (listingId) => {
-      addToCart(listingId, accessToken);
-    },
-    [accessToken]
-  );
-
-  return {
-    addData,
-  };
+  return useMutation((listingId) => addToCart(listingId, accessToken), {
+    onSuccess: () => queryClient.invalidateQueries('cartItems'),
+  });
 };
 
-export const useDeleteCartItems = () => {
+export const useDeleteCartItemsMutation = () => {
+  const queryClient = useQueryClient();
   const { accessToken } = useAuth();
 
-  return function run(listingId) {
-    return deleteCartItem(listingId, { token: accessToken });
-  };
+  return useMutation((listingId) => deleteCartItem(listingId, accessToken), {
+    onSuccess: () => queryClient.invalidateQueries('cartItems'),
+  });
 };

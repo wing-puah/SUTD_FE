@@ -21,7 +21,7 @@ ReactDOM.render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <main className="bg-gray-50 p-6 sm:p-12 min-h-screen">
+        <main>
           <Switch>
             <Route path="/" exact>
               <LoginPage />
