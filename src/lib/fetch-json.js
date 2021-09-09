@@ -1,3 +1,8 @@
+export const encodeQueryString = (params) =>
+  Object.keys(params)
+    .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+    .join('&');
+
 /**
  *
  * @param {RequestInfo} info
@@ -9,15 +14,15 @@ export const fetchJson = (info, { headers, body, ...init } = {}) => {
   const result = fetch(info, {
     ...init,
     signal: abortController.signal,
-    body: body && typeof body === "object" ? JSON.stringify(body) : body,
+    body: body && typeof body === 'object' ? JSON.stringify(body) : body,
     headers: Object.assign(
       {
-        accept: "application/json",
+        accept: 'application/json',
         ...headers,
       },
       body
         ? {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           }
         : {}
     ),
@@ -31,7 +36,7 @@ export const fetchJson = (info, { headers, body, ...init } = {}) => {
       throw error;
     })
     .catch((err) => {
-      if (err.name !== "AbortError") {
+      if (err.name !== 'AbortError') {
         throw err;
       }
     });
