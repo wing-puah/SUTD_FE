@@ -20,12 +20,9 @@ export const deleteComment = ({ id, token }) =>
     },
   });
 
-export const getMoviesList = ({ page = 0, limit = 10, token } = {}) =>
-  fetchJson(`${BASE_URL}/movie/comment?${encodeQueryString({ page, limit })}`, {
+export const getMoviesList = ({ page = 0, limit = 10 } = {}) =>
+  fetchJson(`${BASE_URL}/movie?${encodeQueryString({ page, limit })}`, {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
 
 export const getMovieDetail = ({ id, token }) =>

@@ -5,6 +5,7 @@ import './index.css';
 import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
+import { AppShell } from './app-shell';
 import { AuthProvider } from './domains/auth';
 import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
@@ -23,7 +24,7 @@ ReactDOM.render(
   <BrowserRouter>
     <QueryClientProvider client={queryClient}>
       <AuthProvider>
-        <main>
+        <AppShell>
           <Switch>
             <Route path="/" exact>
               <MoviesPage />
@@ -38,7 +39,7 @@ ReactDOM.render(
               <Marketplace />
             </Route>
           </Switch>
-        </main>
+        </AppShell>
       </AuthProvider>
     </QueryClientProvider>
   </BrowserRouter>,
