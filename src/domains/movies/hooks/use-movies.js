@@ -27,7 +27,7 @@ export const useMoviesListings = () => {
 };
 
 export const useMovieDetail = (id) => {
-  const query = useQuery(['movieDetails', id], () => getMoviesList({ id }));
+  const query = useQuery(['movieDetails', id], () => getMovieDetail({ id }));
 
   return { ...query };
 };

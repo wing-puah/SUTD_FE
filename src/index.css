@@ -7,3 +7,7 @@
   -webkit-line-clamp: 3;
   -webkit-box-orient: vertical;
 }
+
+.movie__detail img {
+  max-height: 60vh;
+}
