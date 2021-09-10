@@ -25,18 +25,12 @@ export const getMoviesList = ({ page = 0, limit = 10 } = {}) =>
     method: 'GET',
   });
 
-export const getMovieDetail = ({ id, token }) =>
+export const getMovieDetail = ({ id }) =>
   fetchJson(`${BASE_URL}/movie/movie/${id}`, {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });
 
-export const getMovieComemnt = ({ id, token }) =>
+export const getMovieComment = ({ id }) =>
   fetchJson(`${BASE_URL}/movie/movie/${id}/comment`, {
     method: 'GET',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
   });

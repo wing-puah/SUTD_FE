@@ -11,6 +11,7 @@ import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
 import { Marketplace } from './pages/marketplace';
 import { MoviesPage } from './pages/movies';
+import { SingleMoviePage } from './pages/singleMovie';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,6 +29,9 @@ ReactDOM.render(
           <Switch>
             <Route path="/" exact>
               <MoviesPage />
+            </Route>
+            <Route path="/movie/:movieId">
+              <SingleMoviePage />
             </Route>
             <Route path="/register">
               <RegisterPage />

@@ -1,7 +1,13 @@
 import React, { useState } from 'react';
 import { useQuery } from 'react-query';
 
-import { getMoviesList } from '../movies.service';
+import {
+  getMoviesList,
+  getMovieDetail,
+  getMovieComment,
+  addComment,
+  deleteComment,
+} from '../movies.service';
 
 export const useMoviesListings = () => {
   const [page, setPage] = useState(1);
@@ -18,4 +24,15 @@ export const useMoviesListings = () => {
     limit,
     setLimit,
   };
+};
+
+export const useMovieDetail = (id) => {
+  const query = useQuery(['movieDetails', id], () => getMoviesList({ id }));
+
+  return { ...query };
+};
+
+export const useMovieComments = (id) => {
+  const query = useQuery(['movieComments', id], () => getMovieComment({ id }));
+  return { ...query };
 };
