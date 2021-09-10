@@ -6,57 +6,13 @@ import { useAuth } from 'domains/auth';
 import { TextField } from 'components/text-field';
 import { Button } from 'components/button';
 import { useMovieDetail, useMovieComments } from '../hooks/use-movies';
-
-const Comments = ({ data, isLoading, status, formik }) => {
-  if (isLoading) {
-    return (
-      <div className="py-5">
-        <h2 className="text-xl">Comments</h2> <p> Loading comments ...</p>
-      </div>
-    );
-  }
-
-  return (
-    <div className="py-5">
-      <h2 className="text-xl">Comments</h2>
-      {!data || (data && data.length === 0) ? (
-        <p>No comments</p>
-      ) : (
-        data.map((singleComment) => (
-          <div className="bg-white shadow overflow-hidden sm:rounded-md">{singleComment}</div>
-        ))
-      )}
-
-      {status === 'authenticated' && (
-        <form onSubmit={formik.handleSubmit} className="mt-5">
-          <TextField
-            label="Add comment"
-            type="text"
-            className="w-full"
-            value={formik.values.comment}
-            onChange={formik.handleChange}
-            onBlur={formik.handleBlur}
-            name="comment"
-            id="comment"
-            placeholder="Your comment ..."
-          />
-          {formik.touched.comment && formik.errors.comment && (
-            <div className="block text-xs text-red-500">{formik.errors.comment}</div>
-          )}
-          <Button type="submit" variant="primary" className="mt-3">
-            ADD
-          </Button>
-        </form>
-      )}
-    </div>
-  );
-};
+import { Comments } from './comments';
 
 export const MovieDetail = ({ movieId }) => {
   const { data: movieDetail, isLoading: isLoadingDetail } = useMovieDetail(movieId);
   const { data: comments, isLoading: isLoadingComments } = useMovieComments(movieId);
 
-  const { status } = useAuth();
+  const { status, accessToken } = useAuth();
 
   const formik = useFormik({
     initialValues: { comment: null },
@@ -99,7 +55,13 @@ export const MovieDetail = ({ movieId }) => {
         {overview}
       </div>
 
-      <Comments data={comments} isLoading={isLoadingComments} status={status} formik={formik} />
+      <Comments
+        data={comments}
+        isLoading={isLoadingComments}
+        status={status}
+        formik={formik}
+        user={accessToken}
+      />
     </div>
   );
 };

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 
+import { useAuth } from 'domains/auth';
 import {
   getMoviesList,
   getMovieDetail,
@@ -35,4 +36,22 @@ export const useMovieDetail = (id) => {
 export const useMovieComments = (id) => {
   const query = useQuery(['movieComments', id], () => getMovieComment({ id }));
   return { ...query };
+};
+
+export const useCreateComment = () => {
+  const queryClient = useQueryClient();
+  const { accessToken } = useAuth();
+
+  return useMutation((data) => addComment({ data, token: accessToken }), {
+    onSuccess: () => queryClient.invalidateQueries('movieComments'),
+  });
+};
+
+export const useDeleteComment = () => {
+  const queryClient = useQueryClient();
+  const { accessToken } = useAuth();
+
+  return useMutation((id) => deleteComment({ id, token: accessToken }), {
+    onSuccess: () => queryClient.invalidateQueries('movieComments'),
+  });
 };
