@@ -5,19 +5,27 @@ import * as Yup from 'yup';
 import { useAuth } from 'domains/auth';
 import { TextField } from 'components/text-field';
 import { Button } from 'components/button';
-import { useMovieDetail, useMovieComments } from '../hooks/use-movies';
+import {
+  useMovieDetail,
+  useMovieComments,
+  useCreateComment,
+  useDeleteComment,
+} from '../hooks/use-movies';
 import { Comments } from './comments';
 
 export const MovieDetail = ({ movieId }) => {
   const { data: movieDetail, isLoading: isLoadingDetail } = useMovieDetail(movieId);
   const { data: comments, isLoading: isLoadingComments } = useMovieComments(movieId);
+  const addComment = useCreateComment();
+  const deleteComment = useDeleteComment();
 
   const { status, accessToken } = useAuth();
 
   const formik = useFormik({
-    initialValues: { comment: null },
+    initialValues: { rating: null, content: '' },
     onSubmit: (values) => {
-      console.log({ values });
+      console.log({ values, movieId });
+      addComment.mutate({ ...values, movieId });
     },
   });
 
@@ -28,6 +36,8 @@ export const MovieDetail = ({ movieId }) => {
   if (!movieDetail) {
     return <div className="p-3">Issue with retrieving data</div>;
   }
+
+  const _deleteComment = (id) => deleteComment.mutate(id);
 
   const { posterUrl, releaseDate, title, overview, adult } = movieDetail;
 
@@ -61,6 +71,7 @@ export const MovieDetail = ({ movieId }) => {
         status={status}
         formik={formik}
         user={accessToken}
+        onDelete={_deleteComment}
       />
     </div>
   );

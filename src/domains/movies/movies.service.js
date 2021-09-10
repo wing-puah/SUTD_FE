@@ -1,8 +1,9 @@
 import { fetchJson, encodeQueryString } from 'lib/fetch-json';
 import { BASE_URL } from 'appConstants';
 
-export const addComment = ({ data, token }) =>
-  fetchJson(`${BASE_URL}/movie/comment`, {
+export const addComment = ({ data, token }) => {
+  console.log({ data, token });
+  return fetchJson(`${BASE_URL}/movie/comment`, {
     method: 'POST',
     body: {
       ...data,
@@ -11,6 +12,7 @@ export const addComment = ({ data, token }) =>
       Authorization: `Bearer ${token}`,
     },
   });
+};
 
 export const deleteComment = ({ id, token }) =>
   fetchJson(`${BASE_URL}/movie/comment/${id}`, {

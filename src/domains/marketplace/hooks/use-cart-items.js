@@ -7,7 +7,6 @@ export const useCartItems = () => {
   const { accessToken } = useAuth();
 
   const query = useQuery(['cartItems', accessToken], () => {
-    console.log({ accessToken });
     const abortController = new AbortController();
     const request = getCartItems({ token: accessToken, signal: abortController.signal });
     request.cancel = () => abortController.abort();
