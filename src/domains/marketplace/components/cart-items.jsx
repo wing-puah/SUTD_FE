@@ -28,7 +28,7 @@ const EmptyCart = () => (
 
 const DeleteIcon = () => (
   <svg
-    class="w-6 h-6"
+    className="w-6 h-6"
     fill="none"
     stroke="currentColor"
     viewBox="0 0 24 24"
@@ -90,7 +90,7 @@ export const CartItems = () => {
       </div>
 
       <div>
-        <ul class="divide-y divide-gray-200"></ul>
+        <ul className="divide-y divide-gray-200"></ul>
       </div>
 
       {!data || (data && data.length === 0) ? (

@@ -1,6 +1,4 @@
 import React from 'react';
-import { useFormik } from 'formik';
-import * as Yup from 'yup';
 
 import { useAuth } from 'domains/auth';
 import { TextField } from 'components/text-field';
@@ -19,16 +17,19 @@ export const MovieDetail = ({ movieId }) => {
   const addComment = useCreateComment();
   const deleteComment = useDeleteComment();
 
-  const { status, accessToken } = useAuth();
+  const { status, user } = useAuth();
 
-  const formik = useFormik({
-    initialValues: { rating: null, content: '' },
-    onSubmit: (values) => {
-      console.log({ values, movieId });
-      addComment.mutate({ ...values, movieId });
-    },
-  });
-
+  const onSubmit = ({ values, formik }) => {
+    addComment.mutate(
+      { ...values, movieId },
+      {
+        onSuccess: () => {
+          formik.resetForm();
+        },
+      }
+    );
+  };
+  console.log({ comments: JSON.stringify(comments) });
   if (!movieDetail && isLoadingDetail) {
     return <div className="p-3">Loading ...</div>;
   }
@@ -69,8 +70,8 @@ export const MovieDetail = ({ movieId }) => {
         data={comments}
         isLoading={isLoadingComments}
         status={status}
-        formik={formik}
-        user={accessToken}
+        user={user}
+        onSubmit={onSubmit}
         onDelete={_deleteComment}
       />
     </div>

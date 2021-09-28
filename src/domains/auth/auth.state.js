@@ -3,17 +3,20 @@ import { fetchJson } from 'lib/fetch-json';
 import { BASE_URL } from 'appConstants';
 
 const ACCESS_TOKEN_STORAGE = 'auth';
-
+const USER_ID_STORAGE = 'userId';
 const storedAccessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE);
+const userIdToken = localStorage.getItem(USER_ID_STORAGE);
 
 const AUTH_DEFAULT_STATE = storedAccessToken
   ? {
       status: 'authenticated',
       accessToken: storedAccessToken,
+      user: userIdToken,
     }
   : {
       status: 'anonymous',
       accessToken: null,
+      user: null,
     };
 
 const AuthContext = React.createContext();
@@ -30,6 +33,12 @@ const authReducer = (state, event) => {
       return {
         accessToken: null,
         status: 'anonymous',
+      };
+
+    case 'setUser':
+      return {
+        ...state,
+        user: event.user,
       };
 
     default:
@@ -51,10 +60,13 @@ export const useAuthState = () => {
       type: 'logout',
     });
 
+  const setUser = (user) => dispatch({ type: 'setUser', user });
+
   return {
     ...state,
     login,
     logout,
+    setUser,
   };
 };
 
@@ -83,6 +95,9 @@ const login = (email, password) =>
     },
   });
 
+const getUserId = (token) =>
+  fetchJson(`${BASE_URL}/whoami`, { headers: { Authorization: `Bearer ${token}` } });
+
 export const useLogin = () => {
   const auth = React.useContext(AuthContext);
 
@@ -94,6 +109,13 @@ export const useLogin = () => {
     return login(email, password).then(async (res) => {
       auth.login(res.access_token);
       await localStorage.setItem(ACCESS_TOKEN_STORAGE, res.access_token);
+
+      getUserId(res.access_token).then((res) => {
+        const user = (res && res.userId) || null;
+        auth.setUser(user);
+        localStorage.setItem(USER_ID_STORAGE, user);
+      });
+
       return res;
     });
   };
@@ -108,6 +130,7 @@ export const useLogout = () => {
 
   return () => {
     auth.logout();
+    localStorage.removeItem(USER_ID_STORAGE);
     localStorage.removeItem(ACCESS_TOKEN_STORAGE);
   };
 };
