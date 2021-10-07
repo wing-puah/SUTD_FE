@@ -23,9 +23,12 @@ export const deleteComment = ({ id, token }) =>
   });
 
 export const getCatsList = ({ page = 0, limit = 10, ...rest } = {}) =>
-  fetchJson(`${BASE_URL}/api/cats?${encodeQueryString({ page, limit, ...rest })}`, {
-    method: 'GET',
-  });
+  fetchJson(
+    `${BASE_URL}/api/cats?${encodeQueryString({ ignoreEncode: ['tags'], page, limit, ...rest })}`,
+    {
+      method: 'GET',
+    }
+  );
 
 export const getCatDetail = ({ id }) =>
   fetchJson(`${BASE_URL}/cat/cat/${id}`, {

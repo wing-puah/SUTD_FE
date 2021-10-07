@@ -1,6 +1,12 @@
-export const encodeQueryString = (params) =>
+export const encodeQueryString = ({ ignoreEncode = [], ...params }) =>
   Object.keys(params)
-    .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
+    .filter((k) => typeof params[k] === 'string' || !isNaN(params[k]))
+    .map((k) => {
+      console.log({ includes: ignoreEncode.includes(k), k });
+      return ignoreEncode.includes(k)
+        ? `${k}=${params[k]}`
+        : `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`;
+    })
     .join('&');
 
 /**

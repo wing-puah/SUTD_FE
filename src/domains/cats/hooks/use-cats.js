@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
+import { fetchJson, encodeQueryString } from 'lib/fetch-json';
 import { useAuth } from 'domains/auth';
 import {
   getCatsList,
@@ -13,8 +14,9 @@ import {
 export const useCatsListings = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
+  const [tags, setTags] = useState(null);
 
-  const query = useQuery(['cats', page, limit], () => getCatsList({ page, limit }), {
+  const query = useQuery(['cats', page, limit, tags], () => getCatsList({ page, limit, tags }), {
     staleTime: Infinity,
   });
 
@@ -24,6 +26,7 @@ export const useCatsListings = () => {
     setPage,
     limit,
     setLimit,
+    setTags,
   };
 };
 
