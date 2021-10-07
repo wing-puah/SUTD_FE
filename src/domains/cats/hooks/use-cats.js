@@ -3,18 +3,18 @@ import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAuth } from 'domains/auth';
 import {
-  getMoviesList,
-  getMovieDetail,
-  getMovieComment,
+  getCatsList,
+  getCatDetail,
+  getCatComment,
   addComment,
   deleteComment,
-} from '../movies.service';
+} from '../cats.service';
 
-export const useMoviesListings = () => {
+export const useCatsListings = () => {
   const [page, setPage] = useState(1);
   const [limit, setLimit] = useState(12);
 
-  const query = useQuery(['movies', page, limit], () => getMoviesList({ page, limit }), {
+  const query = useQuery(['cats', page, limit], () => getCatsList({ page, limit }), {
     staleTime: Infinity,
   });
 
@@ -27,14 +27,14 @@ export const useMoviesListings = () => {
   };
 };
 
-export const useMovieDetail = (id) => {
-  const query = useQuery(['movieDetails', id], () => getMovieDetail({ id }));
+export const useCatDetail = (id) => {
+  const query = useQuery(['catDetails', id], () => getCatDetail({ id }));
 
   return { ...query };
 };
 
-export const useMovieComments = (id) => {
-  const query = useQuery(['movieComments', id], () => getMovieComment({ id }));
+export const useCatComments = (id) => {
+  const query = useQuery(['catComments', id], () => getCatComment({ id }));
   return { ...query };
 };
 
@@ -43,7 +43,7 @@ export const useCreateComment = () => {
   const { accessToken } = useAuth();
 
   return useMutation((data) => addComment({ data, token: accessToken }), {
-    onSuccess: () => queryClient.invalidateQueries('movieComments'),
+    onSuccess: () => queryClient.invalidateQueries('catComments'),
   });
 };
 
@@ -52,6 +52,6 @@ export const useDeleteComment = () => {
   const { accessToken } = useAuth();
 
   return useMutation((id) => deleteComment({ id, token: accessToken }), {
-    onSuccess: () => queryClient.invalidateQueries('movieComments'),
+    onSuccess: () => queryClient.invalidateQueries('catComments'),
   });
 };

@@ -10,8 +10,8 @@ import { AuthProvider } from './domains/auth';
 import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
 import { Marketplace } from './pages/marketplace';
-import { MoviesPage } from './pages/movies';
-import { SingleMoviePage } from './pages/singleMovie';
+import { CatsPage } from './pages/cats';
+import { SingleCat } from './pages/singleCat';
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -28,10 +28,10 @@ ReactDOM.render(
         <AppShell>
           <Switch>
             <Route path="/" exact>
-              <MoviesPage />
+              <CatsPage />
             </Route>
-            <Route path="/movie/:movieId">
-              <SingleMoviePage />
+            <Route path="/cats/:catId">
+              <SingleCat />
             </Route>
             <Route path="/register">
               <RegisterPage />

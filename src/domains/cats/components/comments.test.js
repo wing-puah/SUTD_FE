@@ -10,7 +10,7 @@ const comments = [
     rating: 4,
     content:
       'Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo.',
-    movie: '6152df9c58db34001ed05bc7',
+    cat: '6152df9c58db34001ed05bc7',
     userId: '6152e2f858db34001ed060b9',
     userName: 'user1',
     createdAt: '2021-09-28T09:40:58.924Z',
@@ -21,7 +21,7 @@ const comments = [
     _id: '6152e31c58db34001ed060c8',
     rating: 3,
     content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit,',
-    movie: '6152df9c58db34001ed05bc7',
+    cat: '6152df9c58db34001ed05bc7',
     userId: '6152e2f858db34001ed12345',
     userName: 'user2',
     createdAt: '2021-09-28T09:40:44.866Z',

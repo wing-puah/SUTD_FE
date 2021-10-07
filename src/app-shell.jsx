@@ -14,19 +14,21 @@ export const AppShell = ({ children }) => {
                 to="/"
                 className="text-xl inline-block mr-4 font-bold text-pink-700 hover:text-pink-900"
               >
-                Movies
+                Cats, lotsa cats
               </Link>
-              <div className="flex items-center gap-4">
-                <Link
-                  to="/marketplace"
-                  className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                >
-                  Marketplace
-                </Link>
-              </div>
             </nav>
             {status === 'authenticated' ? (
-              <LogoutButton />
+              <>
+                <div className="flex items-center gap-4">
+                  <Link
+                    to="/marketplace"
+                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                  >
+                    Favourites
+                  </Link>
+                </div>
+                <LogoutButton />
+              </>
             ) : (
               <div className="flex gap-3">
                 <Link to="/login" className="text-sm px-4 py-1 text-pink-500">

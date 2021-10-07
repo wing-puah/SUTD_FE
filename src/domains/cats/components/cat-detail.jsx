@@ -4,16 +4,16 @@ import { useAuth } from 'domains/auth';
 import { TextField } from 'components/text-field';
 import { Button } from 'components/button';
 import {
-  useMovieDetail,
-  useMovieComments,
+  useCatDetail,
+  useCatComments,
   useCreateComment,
   useDeleteComment,
-} from '../hooks/use-movies';
+} from '../hooks/use-cats';
 import { Comments } from './comments';
 
-export const MovieDetail = ({ movieId }) => {
-  const { data: movieDetail, isLoading: isLoadingDetail } = useMovieDetail(movieId);
-  const { data: comments, isLoading: isLoadingComments } = useMovieComments(movieId);
+export const CatDetail = ({ catId }) => {
+  const { data: catDetail, isLoading: isLoadingDetail } = useCatDetail(catId);
+  const { data: comments, isLoading: isLoadingComments } = useCatComments(catId);
   const addComment = useCreateComment();
   const deleteComment = useDeleteComment();
 
@@ -21,7 +21,7 @@ export const MovieDetail = ({ movieId }) => {
 
   const onSubmit = ({ values, formik }) => {
     addComment.mutate(
-      { ...values, movieId },
+      { ...values, catId },
       {
         onSuccess: () => {
           formik.resetForm();
@@ -30,21 +30,21 @@ export const MovieDetail = ({ movieId }) => {
     );
   };
   console.log({ comments: JSON.stringify(comments) });
-  if (!movieDetail && isLoadingDetail) {
+  if (!catDetail && isLoadingDetail) {
     return <div className="p-3">Loading ...</div>;
   }
 
-  if (!movieDetail) {
+  if (!catDetail) {
     return <div className="p-3">Issue with retrieving data</div>;
   }
 
   const _deleteComment = (id) => deleteComment.mutate(id);
 
-  const { posterUrl, releaseDate, title, overview, adult } = movieDetail;
+  const { posterUrl, releaseDate, title, overview, adult } = catDetail;
 
   return (
     <div className="max-w-2xl mx-auto py-16 px-4 sm:py-24 sm:px-6 lg:max-w-7xl lg:px-8">
-      <div className="flex movie__detail">
+      <div className="flex cat__detail">
         <div>
           <img src={posterUrl} alt={title} />
         </div>
