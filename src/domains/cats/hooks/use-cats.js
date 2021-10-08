@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
-import { fetchJson, encodeQueryString } from 'lib/fetch-json';
 import { useAuth } from 'domains/auth';
 import {
   getCatsList,
