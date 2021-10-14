@@ -5,10 +5,12 @@
   "dependencies": {
     "@craco/craco": "^6.2.0",
     "@heroicons/react": "^1.0.4",
+    "@testing-library/dom": "^8.6.0",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
-    "formk": "0.0.20",
+    "classnames": "^2.3.1",
+    "formik": "^2.2.9",
     "prop-types": "^15.7.2",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -45,6 +47,8 @@
     ]
   },
   "devDependencies": {
+    "@tailwindcss/aspect-ratio": "^0.2.1",
+    "@tailwindcss/forms": "^0.3.3",
     "autoprefixer": "^9.8.6",
     "postcss": "^7.0.36",
     "react-styleguidist": "^11.1.7",
