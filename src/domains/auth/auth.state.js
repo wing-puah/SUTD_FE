@@ -95,8 +95,29 @@ const login = (email, password) =>
     },
   });
 
+const register = ({ name, email, password }) =>
+  fetchJson(`${APP_URL}/register`, {
+    method: 'POST',
+    body: {
+      name,
+      email,
+      password,
+      avatar: 'http://github.com/malcolm-kee.png',
+    },
+  });
+
 const getUserId = (token) =>
   fetchJson(`${APP_URL}/whoami`, { headers: { Authorization: `Bearer ${token}` } });
+
+export const useRegister = () => {
+  const auth = React.useContext(AuthContext);
+
+  if (!auth) {
+    throw new Error('Your application must be wrapped with AuthProvider');
+  }
+
+  return register;
+};
 
 export const useLogin = () => {
   const auth = React.useContext(AuthContext);

@@ -11,18 +11,18 @@ import {
 } from '../cats.service';
 
 export const useCatsListings = () => {
-  const [page, setPage] = useState(1);
+  const [skip, setSkip] = useState(0);
   const [limit, setLimit] = useState(12);
   const [tags, setTags] = useState(null);
 
-  const query = useQuery(['cats', page, limit, tags], () => getCatsList({ page, limit, tags }), {
+  const query = useQuery(['cats', skip, limit, tags], () => getCatsList({ skip, limit, tags }), {
     staleTime: Infinity,
   });
 
   return {
     ...query,
-    page,
-    setPage,
+    skip,
+    setSkip,
     limit,
     setLimit,
     setTags,

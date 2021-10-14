@@ -3,8 +3,9 @@ import { Link } from 'react-router-dom';
 
 import { Badge } from '../../../components/badge';
 import { THIRD_PARTY_API } from '../../../appConstants';
+import { Button } from 'components/button';
 
-export const CatItem = ({ data, onClick }) => {
+export const CatItem = ({ data, onClick, onToggleLike, liked }) => {
   const { created_at, id, tags } = data;
 
   return (
@@ -25,6 +26,13 @@ export const CatItem = ({ data, onClick }) => {
           ))}
         </div>
         <div className="p-3">
+          {onToggleLike && (
+            <div>
+              <Button onClick={() => onToggleLike(liked ? 'unlike' : 'like', data)}>
+                {liked ? 'Unlike' : 'Like'}
+              </Button>
+            </div>
+          )}
           {new Date(created_at).toLocaleDateString('en', {
             year: 'numeric',
             month: 'short',

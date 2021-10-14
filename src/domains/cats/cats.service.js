@@ -22,9 +22,9 @@ export const deleteComment = ({ id, token }) =>
     },
   });
 
-export const getCatsList = ({ page = 0, limit = 10, ...rest } = {}) =>
+export const getCatsList = ({ skip = 0, limit = 10, ...rest } = {}) =>
   fetchJson(
-    `${BASE_URL}/api/cats?${encodeQueryString({ ignoreEncode: ['tags'], page, limit, ...rest })}`,
+    `${BASE_URL}/api/cats?${encodeQueryString({ ignoreEncode: ['tags'], skip, limit, ...rest })}`,
     {
       method: 'GET',
     }

@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 
 import { Badge } from 'components/badge';
 import { TextField } from 'components/text-field';
-import { useCatsListings, CatItem } from 'domains/cats';
+import { useCatsListings, useFavorites, CatItem } from 'domains/cats';
+import { useAuth } from 'domains/auth';
+
+import { Button } from 'components/button';
 
 function useDebounce(value, delay = 500) {
   const [debouncedValue, setDebouncedValue] = useState(value);
@@ -35,7 +38,7 @@ function useDebounce(value, delay = 500) {
   return debouncedValue;
 }
 
-const ListItem = ({ isLoading, data, onClick }) => {
+const ListItem = ({ isLoading, data, onClick, onToggleLike, favorites }) => {
   if (isLoading && !data) {
     return <div className="p-3">Loading ...</div>;
   }
@@ -47,17 +50,25 @@ const ListItem = ({ isLoading, data, onClick }) => {
   return (
     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
       {data.map((singleData) => (
-        <CatItem data={singleData} key={singleData.id} onClick={onClick} />
+        <CatItem
+          data={singleData}
+          key={singleData.id}
+          onClick={onClick}
+          onToggleLike={onToggleLike}
+          liked={favorites.indexOf(singleData.id) > -1}
+        />
       ))}
     </div>
   );
 };
 
 export const CatsPage = () => {
-  const { data, isLoading, setTags } = useCatsListings();
+  const { data, isLoading, setTags, skip, setSkip, limit } = useCatsListings();
+  const { addFavorites, removeFavorites, allFavoriteId } = useFavorites();
   const [keyword, setKeyword] = useState('');
   const [currentSearchTerms, setCurrentSearchTerms] = useState([]);
   const value = useDebounce(keyword);
+  const { status } = useAuth();
 
   const _onChange = ({ target }) => {
     setKeyword(target.value);
@@ -70,6 +81,22 @@ export const CatsPage = () => {
 
   const _removeTerm = (word) =>
     setCurrentSearchTerms((terms) => terms.filter((term) => term !== word));
+
+  const _onPrevClick = () => setSkip((_skip) => _skip - limit);
+  const _onNextClick = () => setSkip((_skip) => _skip + limit);
+
+  const _onToggleLike = React.useMemo(() => {
+    if (status === 'authenticated') {
+      return (type, data) => {
+        if (type === 'like') {
+          addFavorites(data);
+          return;
+        }
+        removeFavorites(data);
+      };
+    }
+    return null;
+  }, [status]);
 
   useEffect(() => {
     const _values = value ? [...currentSearchTerms, value] : currentSearchTerms;
@@ -91,7 +118,27 @@ export const CatsPage = () => {
           ))}
         </div>
       </div>
-      <ListItem isLoading={isLoading} data={data} onClick={_onClick} />
+
+      <div className="py-3">
+        <Button
+          className="text-sm px-4 py-1 mr-3 text-pink-500"
+          onClick={_onPrevClick}
+          disabled={skip === 0}
+        >
+          Prev
+        </Button>
+        <Button className="text-sm px-4 py-1 text-pink-500" onClick={_onNextClick}>
+          Next
+        </Button>
+      </div>
+
+      <ListItem
+        isLoading={isLoading}
+        data={data}
+        onClick={_onClick}
+        onToggleLike={_onToggleLike}
+        favorites={allFavoriteId}
+      />
     </div>
   );
 };
