@@ -2,6 +2,8 @@ import * as React from 'react';
 import { fetchJson } from 'lib/fetch-json';
 import { APP_URL } from 'appConstants';
 
+import { FAVORITES } from '../cats/hooks/use-favorites';
+
 const ACCESS_TOKEN_STORAGE = 'auth';
 const USER_ID_STORAGE = 'userId';
 const storedAccessToken = localStorage.getItem(ACCESS_TOKEN_STORAGE);
@@ -151,6 +153,7 @@ export const useLogout = () => {
 
   return () => {
     auth.logout();
+    localStorage.removeItem(FAVORITES);
     localStorage.removeItem(USER_ID_STORAGE);
     localStorage.removeItem(ACCESS_TOKEN_STORAGE);
   };

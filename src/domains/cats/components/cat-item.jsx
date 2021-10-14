@@ -20,7 +20,11 @@ export const CatItem = ({ data, onClick, onToggleLike, liked }) => {
 
         <div className="p-2 my-3">
           {tags.map((singleTag) => (
-            <Badge className="m-1 cursor-pointer" onClick={() => onClick(singleTag)}>
+            <Badge
+              key={singleTag}
+              className="m-1 cursor-pointer"
+              onClick={onClick ? () => onClick(singleTag) : null}
+            >
               {singleTag}
             </Badge>
           ))}

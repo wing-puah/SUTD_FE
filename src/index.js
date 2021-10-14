@@ -6,10 +6,10 @@ import { QueryClient, QueryClientProvider } from 'react-query';
 import { BrowserRouter, Route, Switch } from 'react-router-dom';
 
 import { AppShell } from './app-shell';
-import { AuthProvider } from './domains/auth';
+import { useAuth, AuthProvider } from './domains/auth';
 import { LoginPage } from './pages/login';
 import { RegisterPage } from './pages/register';
-import { Marketplace } from './pages/marketplace';
+import { Favorites } from './pages/favorites';
 import { CatsPage } from './pages/cats';
 import { SingleCat } from './pages/singleCat';
 
@@ -20,6 +20,23 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+function PrivateRoute({ component: Component, ...rest }) {
+  const { status } = useAuth();
+
+  return (
+    <Route
+      {...rest}
+      render={(props) =>
+        status === 'authenticated' ? (
+          <Component {...props} />
+        ) : (
+          <div className="p-3">You have no permission to view this</div>
+        )
+      }
+    />
+  );
+}
 
 ReactDOM.render(
   <BrowserRouter>
@@ -39,9 +56,7 @@ ReactDOM.render(
             <Route path="/login">
               <LoginPage />
             </Route>
-            <Route path="/marketplace">
-              <Marketplace />
-            </Route>
+            <PrivateRoute path="/favorites" component={Favorites} />
           </Switch>
         </AppShell>
       </AuthProvider>

@@ -21,10 +21,10 @@ export const AppShell = ({ children }) => {
               <>
                 <div className="flex items-center gap-4">
                   <Link
-                    to="/marketplace"
+                    to="/favorites"
                     className="text-sm font-medium text-gray-700 hover:text-gray-800"
                   >
-                    Favourites
+                    Favorites
                   </Link>
                 </div>
                 <LogoutButton />

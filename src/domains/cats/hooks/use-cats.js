@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useMutation, useQuery, useQueryClient } from 'react-query';
 
 import { useAuth } from 'domains/auth';

@@ -25,13 +25,15 @@ export const LoginForm = () => {
                 return;
               }
 
-              history.push('/marketplace');
+              history.push('/');
             })
             .catch(() => setStatus('error'));
         }}
         className="p-6"
       >
-        {status === 'error' && <div className="p-2 text-red-800 bg-red-200 rounded-sm">Fail to login.</div>}
+        {status === 'error' && (
+          <div className="p-2 text-red-800 bg-red-200 rounded-sm">Fail to login.</div>
+        )}
         <div className="text-3xl mt-4 mb-8 font-extrabold text-center">Login</div>
         <div className="space-y-6">
           <TextField
@@ -54,7 +56,12 @@ export const LoginForm = () => {
             required
             disabled={status === 'loading'}
           />
-          <Button type="submit" variant="primary" className="w-full" disabled={status === 'loading'}>
+          <Button
+            type="submit"
+            variant="primary"
+            className="w-full"
+            disabled={status === 'loading'}
+          >
             Login
           </Button>
         </div>

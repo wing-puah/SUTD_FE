@@ -2,7 +2,6 @@ import { fetchJson, encodeQueryString } from 'lib/fetch-json';
 import { BASE_URL } from 'appConstants';
 
 export const addComment = ({ data, token }) => {
-  console.log({ data, token });
   return fetchJson(`${BASE_URL}/cat/comment`, {
     method: 'POST',
     body: {
@@ -31,7 +30,7 @@ export const getCatsList = ({ skip = 0, limit = 10, ...rest } = {}) =>
   );
 
 export const getCatDetail = ({ id }) =>
-  fetchJson(`${BASE_URL}/cat/cat/${id}`, {
+  fetchJson(`${BASE_URL}/cat/${id}?json=true`, {
     method: 'GET',
   });
 

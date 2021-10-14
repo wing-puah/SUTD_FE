@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { Badge } from 'components/badge';
 import { TextField } from 'components/text-field';
-import { useCatsListings, useFavorites, CatItem } from 'domains/cats';
+import { useCatsListings, useFavorites, CatListItems } from 'domains/cats';
 import { useAuth } from 'domains/auth';
 
 import { Button } from 'components/button';
@@ -38,33 +38,9 @@ function useDebounce(value, delay = 500) {
   return debouncedValue;
 }
 
-const ListItem = ({ isLoading, data, onClick, onToggleLike, favorites }) => {
-  if (isLoading && !data) {
-    return <div className="p-3">Loading ...</div>;
-  }
-
-  if (!data || (data && data.length === 0)) {
-    return <>There is no cats</>;
-  }
-
-  return (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-      {data.map((singleData) => (
-        <CatItem
-          data={singleData}
-          key={singleData.id}
-          onClick={onClick}
-          onToggleLike={onToggleLike}
-          liked={favorites.indexOf(singleData.id) > -1}
-        />
-      ))}
-    </div>
-  );
-};
-
 export const CatsPage = () => {
   const { data, isLoading, setTags, skip, setSkip, limit } = useCatsListings();
-  const { addFavorites, removeFavorites, allFavoriteId } = useFavorites();
+  const { toggleFavorites, allFavoriteId } = useFavorites();
   const [keyword, setKeyword] = useState('');
   const [currentSearchTerms, setCurrentSearchTerms] = useState([]);
   const value = useDebounce(keyword);
@@ -87,13 +63,7 @@ export const CatsPage = () => {
 
   const _onToggleLike = React.useMemo(() => {
     if (status === 'authenticated') {
-      return (type, data) => {
-        if (type === 'like') {
-          addFavorites(data);
-          return;
-        }
-        removeFavorites(data);
-      };
+      return toggleFavorites;
     }
     return null;
   }, [status]);
@@ -109,7 +79,7 @@ export const CatsPage = () => {
         <TextField value={keyword} onChange={_onChange} placeholder="Search for cats" />
         <div className="my-3">
           {currentSearchTerms.map((singleTerm) => (
-            <Badge className="mr-3">
+            <Badge className="mr-3" key={singleTerm}>
               <span className="px-1">{singleTerm}</span>
               <span className="cursor-pointer" onClick={() => _removeTerm(singleTerm)}>
                 X
@@ -132,7 +102,7 @@ export const CatsPage = () => {
         </Button>
       </div>
 
-      <ListItem
+      <CatListItems
         isLoading={isLoading}
         data={data}
         onClick={_onClick}
