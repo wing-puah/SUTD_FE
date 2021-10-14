@@ -1,3 +1,5 @@
+import { isCompositeComponentWithType } from 'react-dom/test-utils';
+
 export const encodeQueryString = (params) =>
   Object.keys(params)
     .map((k) => `${encodeURIComponent(k)}=${encodeURIComponent(params[k])}`)
@@ -27,12 +29,14 @@ export const fetchJson = (info, { headers, body, ...init } = {}) => {
         : {}
     ),
   })
-    .then((res) => {
+    .then(async (res) => {
       if (res.ok) {
         return res.json();
       }
+
       const error = new Error(res.statusText);
       error.response = res;
+
       throw error;
     })
     .catch((err) => {
