@@ -14,7 +14,7 @@ export const AppShell = ({ children }) => {
                 to="/"
                 className="text-xl inline-block mr-4 font-bold text-pink-700 hover:text-pink-900"
               >
-                Cats, lotsa cats
+                Cats, lotsa cats aa
               </Link>
             </nav>
             {status === 'authenticated' ? (
