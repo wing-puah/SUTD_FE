@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { fetchJson } from 'lib/fetch-json';
-import { BASE_URL } from 'appConstants';
+import { APP_URL } from 'appConstants';
 
 const ACCESS_TOKEN_STORAGE = 'auth';
 const USER_ID_STORAGE = 'userId';
@@ -87,7 +87,7 @@ export const useAuth = () => {
 };
 
 const login = (email, password) =>
-  fetchJson(`${BASE_URL}/login`, {
+  fetchJson(`${APP_URL}/login`, {
     method: 'POST',
     body: {
       username: email,
@@ -96,7 +96,7 @@ const login = (email, password) =>
   });
 
 const getUserId = (token) =>
-  fetchJson(`${BASE_URL}/whoami`, { headers: { Authorization: `Bearer ${token}` } });
+  fetchJson(`${APP_URL}/whoami`, { headers: { Authorization: `Bearer ${token}` } });
 
 export const useLogin = () => {
   const auth = React.useContext(AuthContext);
