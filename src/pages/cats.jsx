@@ -40,7 +40,7 @@ function useDebounce(value, delay = 500) {
 
 export const CatsPage = () => {
   const { data, isLoading, setTags, skip, setSkip, limit } = useCatsListings();
-  const { toggleFavorites, allFavoriteId } = useFavorites();
+  const { toggleFavorites, reinitFavorites, favorites } = useFavorites();
   const [keyword, setKeyword] = useState('');
   const [currentSearchTerms, setCurrentSearchTerms] = useState([]);
   const value = useDebounce(keyword);
@@ -60,6 +60,10 @@ export const CatsPage = () => {
 
   const _onPrevClick = () => setSkip((_skip) => _skip - limit);
   const _onNextClick = () => setSkip((_skip) => _skip + limit);
+
+  useEffect(() => {
+    reinitFavorites();
+  }, []);
 
   const _onToggleLike = React.useMemo(() => {
     if (status === 'authenticated') {
@@ -107,7 +111,7 @@ export const CatsPage = () => {
         data={data}
         onClick={_onClick}
         onToggleLike={_onToggleLike}
-        favorites={allFavoriteId}
+        favorites={favorites}
       />
     </div>
   );

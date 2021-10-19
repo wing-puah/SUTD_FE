@@ -11,7 +11,7 @@ export const CatItem = ({ data, onClick, onToggleLike, liked }) => {
   return (
     <div
       key={id}
-      className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200"
+      className="col-span-1 flex flex-col text-center bg-white rounded-lg shadow divide-y divide-gray-200 cat__item"
     >
       <div className="flex-1 flex flex-col text-left overflow-hidden">
         <Link to={`/cats/${id}`}>

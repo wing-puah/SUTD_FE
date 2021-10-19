@@ -26,6 +26,8 @@ export const CatDetail = ({ catId }) => {
     return <div className="p-3">Issue with retrieving data</div>;
   }
 
+  const _liked = allFavoriteId.indexOf(catDetail.id) > -1;
+
   return (
     <div className="p-5">
       <CatItem
@@ -33,7 +35,7 @@ export const CatDetail = ({ catId }) => {
         key={catDetail.id}
         onClick={null}
         onToggleLike={_onToggleLike}
-        liked={allFavoriteId.indexOf(catDetail.id) > -1}
+        liked={_liked}
       />
     </div>
   );

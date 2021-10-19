@@ -6,43 +6,43 @@ export const AppShell = ({ children }) => {
 
   return (
     <>
-      <header className="md:sticky md:top-0 bg-white md:z-10">
-        <div className="px-4">
-          <div className="flex justify-between items-center py-2 max-w-7xl mx-auto border-b border-gray-200">
-            <nav className="flex items-center">
-              <Link
-                to="/"
-                className="text-xl inline-block mr-4 font-bold text-pink-700 hover:text-pink-900"
-              >
-                Cats, lotsa cats aa
-              </Link>
-            </nav>
-            {status === 'authenticated' ? (
-              <>
-                <div className="flex items-center gap-4">
-                  <Link
-                    to="/favorites"
-                    className="text-sm font-medium text-gray-700 hover:text-gray-800"
-                  >
-                    Favorites
-                  </Link>
-                </div>
-                <LogoutButton />
-              </>
-            ) : (
-              <div className="flex gap-3">
-                <Link to="/login" className="text-sm px-4 py-1 text-pink-500">
-                  Login
-                </Link>
-                <Link to="/register" className="text-sm px-4 py-1 text-pink-500">
-                  Register
+      <header className="md:sticky md:top-0 bg-white md:z-10 border-b border-gray-200">
+        <div className="flex justify-between items-center py-2 px-4 max-w-7xl mx-auto">
+          <nav className="flex items-center">
+            <Link
+              to="/"
+              className="text-xl inline-block mr-4 font-bold text-pink-700 hover:text-pink-900"
+            >
+              Cats, lotsa cats aa
+            </Link>
+          </nav>
+          {status === 'authenticated' ? (
+            <>
+              <div className="flex items-center gap-4">
+                <Link
+                  to="/favorites"
+                  className="text-sm font-medium text-gray-700 hover:text-gray-800"
+                >
+                  Favorites
                 </Link>
               </div>
-            )}
-          </div>
+              <LogoutButton />
+            </>
+          ) : (
+            <div className="flex gap-3">
+              <Link to="/login" className="text-sm px-4 py-1 text-pink-500">
+                Login
+              </Link>
+              <Link to="/register" className="text-sm px-4 py-1 text-pink-500">
+                Register
+              </Link>
+            </div>
+          )}
         </div>
       </header>
-      <main>{children}</main>
+      <div className="bg-gray-50">
+        <main className="max-w-7xl mx-auto">{children}</main>
+      </div>
     </>
   );
 };

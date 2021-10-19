@@ -10,6 +10,15 @@ export const useFavorites = () => {
 
   const allFavoriteId = useMemo(() => favorites.map((el) => el.id), [favorites]);
 
+  const reinitFavorites = async () => {
+    setFavorites(() => []);
+    const _retrievedFavorites = await localStorage.getItem(FAVORITES);
+
+    setFavorites(() => {
+      return _retrievedFavorites ? JSON.parse(_retrievedFavorites) : [];
+    });
+  };
+
   const addFavorites = (data) =>
     setFavorites((prevData) => {
       const newData = [...prevData, data];
@@ -32,5 +41,12 @@ export const useFavorites = () => {
     removeFavorites(data);
   };
 
-  return { favorites, addFavorites, removeFavorites, toggleFavorites, allFavoriteId };
+  return {
+    reinitFavorites,
+    favorites,
+    addFavorites,
+    removeFavorites,
+    toggleFavorites,
+    allFavoriteId,
+  };
 };
